@@ -8,17 +8,23 @@ jobs:
     runs-on: ubuntu-20.04
     permissions:
       id-token: write
+      contents: "read"
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ARN_ROLE }}
-          aws-region: us-east-1
-          role-duration-seconds: 900
-
-      - name: Sync daily folder
+      - name: Create dirs
         run: |
-          aws s3 sync data/daily ${{ secrets.AWS_BUCKET_URL }}/daily --delete
+          mkdir -p download/api
+
+      - name: Download Daily api test report
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RUN_ID: 2445462717
+          ARTIFACT_NAME: api-test-report---daily
+        working-directory: download/api
+        run: |
+          gh run download $RUN_ID \
+            --name $ARTIFACT_NAME \
+            --repo woocommerce/woocommerce
+
+      - name: Try gcloud
+        run: gcloud version
