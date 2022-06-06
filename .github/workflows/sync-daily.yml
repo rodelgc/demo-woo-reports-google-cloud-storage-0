@@ -32,4 +32,4 @@ jobs:
       - name: Try gcloud
         run: |
           gcloud version
-          gcloud config get project
+          gcloud config get-value project
