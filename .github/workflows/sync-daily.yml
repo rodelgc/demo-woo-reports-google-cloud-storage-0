@@ -1,6 +1,9 @@
 name: Sync daily folder
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - "main"
 
 jobs:
   sync_daily_folder:
