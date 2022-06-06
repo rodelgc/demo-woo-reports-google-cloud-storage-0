@@ -36,4 +36,4 @@ jobs:
 
       - name: Run gsutil and gcloud commands
         run: |
-          gsutil ls
+          gsutil ls ${{ secrets.BUCKET_URL }}
