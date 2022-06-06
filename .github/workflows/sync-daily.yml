@@ -1,0 +1,24 @@
+name: Sync daily folder
+on:
+  workflow_dispatch:
+
+jobs:
+  sync_daily_folder:
+    name: Sync daily folder
+    runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ARN_ROLE }}
+          aws-region: us-east-1
+          role-duration-seconds: 900
+
+      - name: Sync daily folder
+        run: |
+          aws s3 sync data/daily ${{ secrets.AWS_BUCKET_URL }}/daily --delete

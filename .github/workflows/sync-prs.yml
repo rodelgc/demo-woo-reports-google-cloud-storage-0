@@ -1,0 +1,24 @@
+name: Sync entire PR folder
+on:
+  workflow_dispatch:
+
+jobs:
+  sync_pr_folder:
+    name: Sync PR folder
+    runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ARN_ROLE }}
+          aws-region: us-east-1
+          role-duration-seconds: 900
+
+      - name: Sync PR folders
+        run: |
+          aws s3 sync data/pr ${{ secrets.AWS_BUCKET_URL }}/pr --delete
