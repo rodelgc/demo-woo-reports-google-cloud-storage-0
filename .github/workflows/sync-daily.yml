@@ -30,4 +30,6 @@ jobs:
             --repo woocommerce/woocommerce
 
       - name: Try gcloud
-        run: gcloud version
+        run: |
+          gcloud version
+          gcloud config get project
