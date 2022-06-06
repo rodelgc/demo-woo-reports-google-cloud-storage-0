@@ -34,6 +34,7 @@ jobs:
         with:
           credentials_json: "${{ secrets.SA_KEY_JSON }}"
 
-      - name: Run gsutil and gcloud commands
+      - name: Sync daily report
+        working-directory: download/api
         run: |
-          gsutil ls ${{ secrets.BUCKET_URL }}
+          gsutil -m rsync -r allure-report ${{ secrets.BUCKET_URL }}/daily/api/allure-report
